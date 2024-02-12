@@ -431,8 +431,26 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+// 13
+function sortByAsc(arr) {
+  const arrayReplica = arr;
+  const prop = arr[0];
+  const num1 = [];
+  const num2 = [];
+
+  if (arr.length <= 1) return arr;
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < prop) num1[num1.length] = arr[i];
+    else num2[num2.length] = arr[i];
+  }
+  const sortNum1 = sortByAsc(num1);
+  const sortNum2 = sortByAsc(num2);
+  const sortArr = [...sortNum1, prop, ...sortNum2];
+
+  for (let i = 0; i < arrayReplica.length; i += 1) {
+    arrayReplica[i] = sortArr[i];
+  }
+  return arrayReplica;
 }
 
 /**
@@ -452,8 +470,29 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+// 14
+function shuffleChar(str, iterations) {
+  let currentResult = str;
+  let index = 0;
+  const result = [currentResult];
+
+  for (let i = 1; i <= iterations; i += 1) {
+    let newString = '';
+    for (let j = 0; j < currentResult.length; j += 2) {
+      newString += currentResult[j];
+    }
+    for (let j = 1; j < currentResult.length; j += 2) {
+      newString += currentResult[j];
+    }
+    currentResult = newString;
+
+    if (currentResult === str) {
+      return result[iterations % (index + 1)];
+    }
+    index += 1;
+    result[index] = currentResult;
+  }
+  return currentResult;
 }
 
 /**
@@ -473,8 +512,44 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+// 15
+function getNearestBigger(number) {
+  let temporaryNumber = number;
+  const digits = [];
+
+  while (temporaryNumber > 0) {
+    digits.unshift(temporaryNumber % 10);
+    temporaryNumber = Math.floor(temporaryNumber / 10);
+  }
+
+  let i = digits.length - 2;
+  while (i >= 0 && digits[i] >= digits[i + 1]) {
+    i -= 1;
+  }
+
+  if (i === -1) {
+    return number;
+  }
+
+  let j = digits.length - 1;
+  while (j > i && digits[j] <= digits[i]) {
+    j -= 1;
+  }
+
+  [digits[i], digits[j]] = [digits[j], digits[i]];
+
+  let start = i + 1;
+  let end = digits.length - 1;
+  while (start < end) {
+    [digits[start], digits[end]] = [digits[end], digits[start]];
+    start += 1;
+    end -= 1;
+  }
+  let result = 0;
+  for (let k = 0; k < digits.length; k += 1) {
+    result = result * 10 + digits[k];
+  }
+  return result;
 }
 
 module.exports = {
