@@ -295,8 +295,25 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+// 10
+function getBalanceIndex(arr) {
+  function getSum(arrSum, start, end) {
+    let sum = 0;
+
+    for (let j = start; j <= end; j += 1) {
+      sum += arrSum[j];
+    }
+    return sum;
+  }
+  for (let i = 0; i < arr.length; i += 1) {
+    const leftSum = getSum(arr, 0, i - 1);
+    const rightSum = getSum(arr, i + 1, arr.length - 1);
+
+    if (leftSum === rightSum) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 /**
@@ -320,8 +337,49 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+// 11
+function getSpiralMatrix(size) {
+  const matrix = [];
+  let num = 1;
+
+  for (let i = 0; i < size; i += 1) {
+    matrix[i] = [];
+    for (let j = 0; j < size; j += 1) {
+      matrix[i][j] = 0;
+    }
+  }
+
+  let left = 0;
+  let right = size - 1;
+  let top = 0;
+  let bottom = size - 1;
+
+  while (left <= right && top <= bottom) {
+    for (let i = left; i <= right; i += 1) {
+      matrix[top][i] = num;
+      num += 1;
+    }
+    top += 1;
+
+    for (let i = top; i <= bottom; i += 1) {
+      matrix[i][right] = num;
+      num += 1;
+    }
+    right -= 1;
+
+    for (let i = right; i >= left; i -= 1) {
+      matrix[bottom][i] = num;
+      num += 1;
+    }
+    bottom -= 1;
+
+    for (let i = bottom; i >= top; i -= 1) {
+      matrix[i][left] = num;
+      num += 1;
+    }
+    left += 1;
+  }
+  return matrix;
 }
 
 /**
@@ -339,8 +397,24 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+// 12
+function rotateMatrix(matrix) {
+  const arrayContent = [];
+  const matrixReplica = matrix;
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    arrayContent[i] = [];
+    for (let j = 0; j < matrix.length; j += 1) {
+      arrayContent[i][j] = matrix[i][j];
+    }
+  }
+
+  for (let i = 0; i < matrix.length; i += 1) {
+    for (let j = 0; j < matrix.length; j += 1) {
+      matrixReplica[i][j] = arrayContent[matrix.length - j - 1][i];
+    }
+  }
+  return matrixReplica;
 }
 
 /**
